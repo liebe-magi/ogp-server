@@ -14,7 +14,7 @@ func ogpParser() gin.HandlerFunc {
 		og, err := opengraph.Fetch(url)
 		if err != nil {
 			log.Println(err)
-            ctx.JSON(http.StatusInternalServerError, nil)
+			ctx.JSON(http.StatusInternalServerError, nil)
 		} else {
 			ctx.JSON(http.StatusOK, og)
 		}
