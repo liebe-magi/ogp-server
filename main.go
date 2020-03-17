@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -8,13 +9,18 @@ import (
 	"github.com/otiai10/opengraph"
 )
 
+type ErrorJson struct {
+	ErrorMessage string `json:"ErrorMessage"`
+}
+
 func ogpParser() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		url := ctx.Query("url")
 		og, err := opengraph.Fetch(url)
 		if err != nil {
 			log.Println(err)
-			ctx.JSON(http.StatusInternalServerError, nil)
+			eJson := ErrorJson{ErrorMessage: fmt.Sprint(err)}
+			ctx.JSON(http.StatusOK, eJson)
 		} else {
 			ctx.JSON(http.StatusOK, og)
 		}
